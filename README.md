@@ -12,12 +12,12 @@ This project implements a **next word prediction** model using a recurrent neura
 
 ##  Technologies Used
 
-- Python 3.x
-- TensorFlow 2.x
+- Python 3.11
+- TensorFlow 2.5.0
 - NumPy
 - Keras
 - Natural Language Processing (NLP)
-- Jupyter Notebook (for development)
+- Jupyter Notebook (for development) in V.S. code
 
 ---
 
@@ -38,4 +38,5 @@ This project implements a **next word prediction** model using a recurrent neura
 - LSTM layer to learn sequential dependencies
 - Dense (fully connected) output layer with softmax activation
 
-
+![image_alt]
+![image_alt]
