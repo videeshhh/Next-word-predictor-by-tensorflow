@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Next Word Predictor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #1e3a8a, #3b82f6, #1d4ed8, #2563eb, #0ea5e9, #0284c7);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .floating-orbs {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(59, 130, 246, 0.1);
+      backdrop-filter: blur(10px);
+      animation: float 20s infinite linear;
+    }
+
+    .orb:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .orb:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      left: 20%;
+      animation-delay: 2s;
+    }
+
+    .orb:nth-child(3) {
+      width: 100px;
+      height: 100px;
+      left: 35%;
+      animation-delay: 4s;
+    }
+
+    .orb:nth-child(4) {
+      width: 120px;
+      height: 120px;
+      left: 50%;
+      animation-delay: 6s;
+    }
+
+    .orb:nth-child(5) {
+      width: 90px;
+      height: 90px;
+      left: 65%;
+      animation-delay: 8s;
+    }
+
+    .orb:nth-child(6) {
+      width: 70px;
+      height: 70px;
+      left: 80%;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      background: hsla(212, 91%, 65%, 0.7);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 3rem;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      position: relative;
+      z-index: 2;
+      animation: slideIn 0.8s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #dbeafe, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      color: white;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      background: rgba(59, 130, 246, 0.2);
+      backdrop-filter: blur(10px);
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    input:focus {
+      outline: none;
+      background: rgba(59, 130, 246, 0.3);
+      border-color: rgba(59, 130, 246, 0.6);
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+      transform: translateY(-2px);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 1rem;
+      box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4);
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(30, 64, 175, 0.5);
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    }
+
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    .result {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(30, 58, 138, 0.3);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: white;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: all 0.3s ease;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result strong {
+      color: #ffd700;
+      font-size: 1.1rem;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .result ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .result li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .result li:hover {
+      background: rgba(255, 255, 255, 0.1);
+      padding-left: 0.5rem;
+      border-radius: 8px;
+    }
+
+    .result li:last-child {
+      border-bottom: none;
+    }
+
+    .loading {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-orbs">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <div class="container">
+    <h1>Next Word Prediction</h1>
+
+    <div class="input-group">
+      <label for="seed">Enter Seed Text:</label>
+      <input type="text" id="seed" placeholder="e.g. the adventures of sherlock">
+    </div>
+
+    <div class="input-group">
+      <label for="beam">Beam Width:</label>
+      <input type="number" id="beam" value="3">
+    </div>
+
+    <div class="input-group">
+      <label for="next">Next Words to Predict:</label>
+      <input type="number" id="next" value="5">
+    </div>
+
+    <button onclick="getPrediction()">Predict</button>
+
+    <div class="result" id="output">
+      Enter your text and click predict to see the magic happen!
+    </div>
+  </div>
+
+  <script>
+    async function getPrediction() {
+      const seed = document.getElementById('seed').value;
+      const beam = document.getElementById('beam').value;
+      const next = document.getElementById('next').value;
+
+      // Show loading state
+      const output = document.getElementById('output');
+      output.innerHTML = '<div class="loading">Predicting next words...</div>';
+
+      try {
+        const res = await fetch('/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ seed, beam_width: beam, next_words: next })
+        });
+
+        const data = await res.json();
+        output.innerHTML = `
+          <div>
+            <strong>Next Word:</strong> ${data.next_word}<br>
+            <ul>${data.beam_search.map(x => `<li>${x}</li>`).join('')}</ul>
+          </div>
+        `;
+      } catch (error) {
+        output.innerHTML = '<div style="color: #ff6b6b;">Error: Unable to connect to prediction service</div>';
+      }
+    }
+
+    // Add enter key support
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        getPrediction();
+      }
+    });
+  </script>
+</body>
+</html>
