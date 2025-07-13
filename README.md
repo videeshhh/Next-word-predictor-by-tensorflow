@@ -38,5 +38,5 @@ This project implements a **next word prediction** model using a recurrent neura
 - LSTM layer to learn sequential dependencies
 - Dense (fully connected) output layer with softmax activation
 
-![image_alt]https://github.com/videeshhh/Next-word-predictor-by-tensorflow/blob/main/Screenshot%202025-07-13%20151119.png?raw=true
-![image_alt]https://github.com/videeshhh/Next-word-predictor-by-tensorflow/blob/main/Screenshot%202025-07-13%20151129.png?raw=true
+![image_alt](https://github.com/videeshhh/Next-word-predictor-by-tensorflow/blob/main/Screenshot%202025-07-13%20151119.png?raw=true)
+![image_alt](https://github.com/videeshhh/Next-word-predictor-by-tensorflow/blob/main/Screenshot%202025-07-13%20151129.png?raw=true)
