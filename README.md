@@ -23,7 +23,7 @@ This project implements a **next word prediction** model using a recurrent neura
 
 ## Dataset
 
-- A **small, custom dataset** was used, containing basic English text data.
+- A **small, custom dataset** was used, containing basic English text of sherlock holmes.
 - The limited dataset size was due to **hardware constraints**, which affected model accuracy and generalization capability.
 - The dataset was preprocessed with:
   - Tokenization
